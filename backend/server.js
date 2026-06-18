@@ -9,30 +9,8 @@ connectDB();
 
 const app = express();
 
-// CORS configuration - Allows access from localhost in development, and custom Frontend URL in production
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:5000',
-  'http://127.0.0.1:5000',
-  'http://localhost:' + (process.env.PORT || 5000),
-  'http://127.0.0.1:' + (process.env.PORT || 5000),
-  process.env.FRONTEND_URL,
-].filter(Boolean);
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps, curl, postman)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
-    credentials: true,
-  })
-);
+// Enable CORS for all routes (supports flexible hosting environments)
+app.use(cors());
 
 // Body Parser Middleware
 app.use(express.json());
